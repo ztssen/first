@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="./data.js"></script>
+</head>
+
+<body>
+    <canvas id="mycanvas" width="1000" height="600" style="border: solid 1px #000"></canvas>
+    <script>
+        var mycanvas = document.getElementById("mycanvas");
+        console.log(mycanvas)
+        var context = mycanvas.getContext("2d");
+        context.translate(50, 550);
+        var x = 600 / 6; //计算x轴间距
+        var y = 500 / 7; //计算y轴间距
+        //x轴
+        context.beginPath();
+        context.moveTo(0, 0);
+        context.lineTo(600, 0);
+        context.stroke();
+        context.closePath();
+        //y轴
+        context.beginPath();
+        context.moveTo(0, 0);
+        context.lineTo(0, -500);
+        context.stroke();
+        context.closePath();
+        //x轴刻度
+        for (var i = 0; i <= 3000; i += 500) {
+            context.beginPath();
+            context.strokeStyle = '#000';
+            context.moveTo(i / 500 * x, 10);
+            context.lineTo(i / 500 * x, 0);
+            context.stroke();
+            context.strokeStyle = '#ccc';
+            context.lineTo(i / 500 * x, -500);
+            context.fillText(i, i / 500 * x, 20);
+            context.textAlign = 'center';
+            context.stroke();
+            context.closePath();
+        }
+        //y轴刻度
+        for (var i = 0; i <= 7; i++) {
+            context.beginPath();
+            context.strokeStyle = '#000';
+            context.moveTo(0, -y * i);
+            context.lineTo(-10, -y * i);
+            context.stroke();
+            context.closePath();
+        }
+        for (var j = 0; j < data.length; j++) {
+            context.beginPath();
+            context.textAlign = 'right';
+            context.fillText(data[j].date, -20, -j * y + -y / 2);
+            console.log(data[j].date)
+            context.closePath();
+        }
+        data.forEach((item, index) => {
+            var start = 0;
+
+            item.type.forEach((a, b) => {
+                context.beginPath();
+                context.lineWidth = 50;
+                if (b == 0) {
+                    context.moveTo(start, -index * y + -y / 2);
+                } else {
+                    context.lineTo(start, -index * y + -y / 2);
+                }
+                start += +a.val / 5;
+                context.lineTo(start, -index * y + -y / 2);
+                context.strokeStyle = a.color;
+                context.stroke();
+                context.textAlign = 'right';
+                context.fillStyle = '#fff';
+                context.fillText(a.val, start, -index * y + -y / 2);
+                context.closePath();
+            });
+        });
+    </script>
+
+</body>
+
+</html>
